@@ -3115,10 +3115,9 @@
     }
 
     .footer-left-logo {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--brand);
+      height: 20px;
+      width: auto;
+      object-fit: contain;
       margin-bottom: var(--space-3);
       display: block;
     }
@@ -3289,29 +3288,195 @@
         display: block !important;
       }
 
-      .footer-container {
-        flex-direction: column;
-        gap: var(--space-6);
-        text-align: center;
+      /* Alinhamento de textos para a esquerda no mobile */
+      .hero-container,
+      .about-text,
+      .section-title-fira,
+      .section-subtitle-lato,
+      .cta-section,
+      .page-hero-container-new,
+      .page-hero-container-gallery,
+      .page-hero-container-announcements,
+      .page-hero-container-store,
+      .page-hero-container-team,
+      .store-comunicado-card {
+        text-align: left !important;
       }
-      .footer-left, .footer-center, .footer-right {
-        flex: 0 0 100%;
-        text-align: center;
+
+      .cta-container,
+      .comunicado-content {
+        align-items: flex-start !important;
+      }
+
+      .hero-subtitle {
+        margin-left: 0 !important;
+        margin-right: auto !important;
+      }
+
+      .page-hero-container-new p,
+      .page-hero-container-gallery p,
+      .page-hero-container-announcements p,
+      .page-hero-container-store p,
+      .page-hero-container-team p {
+        margin-left: 0 !important;
+        margin-right: auto !important;
+      }
+
+      /* Alinhamento dos wrappers de botões e flexboxes no mobile */
+      .hero-actions,
+      .cta-actions,
+      .btn-center-wrapper {
+        justify-content: flex-start !important;
+      }
+
+      /* === RODAPÉ MOBILE === */
+      .footer-section {
+        padding: var(--space-8) var(--space-4) !important;
+      }
+      .footer-container {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: var(--space-6) !important;
+      }
+      .footer-left, 
+      .footer-center, 
+      .footer-right {
+        flex: 0 0 100% !important;
+        width: 100% !important;
+        text-align: center !important;
+      }
+      .footer-left-logo {
+        margin: 0 auto var(--space-3) auto !important;
       }
       .footer-left-tagline {
-        margin: 0 auto;
+        margin: 0 auto !important;
       }
       .footer-links {
-        justify-content: center;
-        max-width: 280px;
-        margin: 0 auto;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: var(--space-3) !important;
+        margin: 0 auto !important;
+        max-width: none !important;
       }
       .footer-right p {
-        text-align: center;
+        text-align: center !important;
+      }
+      .footer-base {
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        gap: var(--space-4) !important;
+        padding: var(--space-6) 0 0 0 !important;
+      }
+      .footer-copyright {
+        text-align: center !important;
       }
       
       .principles-deck {
         grid-template-columns: 1fr;
+      }
+
+      /* === PAGINA DE PERSONAGENS MOBILE === */
+      .page-hero-container-new h1 {
+        font-size: 2.25rem !important;
+      }
+      .page-hero-container-new p {
+        font-size: 0.875rem !important;
+        padding-left: var(--space-4) !important;
+        padding-right: var(--space-4) !important;
+      }
+
+      .char-tabs-container {
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+        padding: 0 var(--space-4) !important;
+      }
+      .char-tabs-container::-webkit-scrollbar {
+        display: none !important;
+      }
+      .char-tabs-list {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        justify-content: flex-start !important;
+        gap: var(--space-4) !important;
+        padding: var(--space-3) 0 !important;
+      }
+      .char-tabs-list li {
+        display: inline-block !important;
+        flex-shrink: 0 !important;
+      }
+      .char-tab-btn {
+        min-height: 44px !important;
+        min-width: 44px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: var(--space-2) var(--space-4) !important;
+        font-size: 16px !important; /* Evitar zoom no iOS */
+      }
+      .char-tab-btn.active::after {
+        bottom: -12px !important;
+      }
+
+      .char-detail-row-new,
+      .char-detail-row-new.reverse {
+        flex-direction: column !important;
+        gap: var(--space-6) !important;
+        padding: 0 var(--space-4) !important;
+      }
+      .char-detail-col-img,
+      .char-detail-col-info {
+        flex: 0 0 100% !important;
+        width: 100% !important;
+        padding: 0 !important;
+      }
+      .char-image-box-new {
+        width: 100% !important;
+        border-radius: var(--radius-md) !important;
+      }
+      .char-detail-col-img img,
+      .char-detail-col-img svg,
+      .char-detail-col-img .char-img-placeholder {
+        max-width: 100% !important;
+        height: auto !important;
+      }
+
+      .char-detail-title-new {
+        font-size: 1.75rem !important;
+      }
+      .char-tags-row {
+        flex-wrap: wrap !important;
+      }
+      .char-detail-paper {
+        font-size: 0.875rem !important;
+      }
+
+      .char-scientific-box {
+        padding: var(--space-4) !important;
+        border-left: 3px solid var(--brand) !important;
+      }
+      .char-scientific-text {
+        font-size: 0.875rem !important;
+      }
+
+      .stat-label-new {
+        font-size: 0.6rem !important;
+        width: 90px !important;
+      }
+
+      /* Botão "ver todos os personagens" largura 100% */
+      .btn-center-wrapper a[data-i18n="char_btn_all"] {
+        width: 100% !important;
+        text-align: center !important;
+        display: block !important;
+      }
+      .btn-center-wrapper:has(a[data-i18n="char_btn_all"]) {
+        justify-content: center !important;
       }
     }
 
@@ -3319,6 +3484,11 @@
     @media (max-width: 480px) {
       h1 { font-size: 1.875rem; }
       .hero-title { font-size: 2.25rem; }
+      
+      /* Reduzir h1 do hero de personagens no mobile pequeno */
+      .page-hero-container-new h1 {
+        font-size: 1.75rem !important;
+      }
       
       .hero-actions {
         flex-direction: column;
@@ -4104,7 +4274,7 @@
   <footer class="footer-section">
     <div class="footer-container">
       <div class="footer-left">
-        <span class="footer-left-logo">labchange</span>
+        <img src="assets/labchangeescrito.svg" alt="labchange" class="footer-left-logo">
        <p class="footer-left-tagline" data-i18n="footer_tagline">Grupo de pesquisa: design, ciência e tecnologia CNPq</p>
       </div>
 
@@ -5171,8 +5341,8 @@
         desc_en: 'A way to support awareness of alternatives to animal testing and spread the labchange message beyond screens.',
         price: 'R$ --,--',
         img_class: 'merch-img-camiseta',
-        src: 'assets/camiseta frente.png',
-        src_hover: 'assets/camiseta costas.png'
+        src: 'assets/camiseta frente.webp',
+        src_hover: 'assets/camiseta costas.webp'
       },
       {
         id: 'caneca',
@@ -5184,7 +5354,7 @@
         desc_en: 'Because every great change starts with a conversation, a reflection or a shared cup of coffee.',
         price: 'R$ --,--',
         img_class: 'merch-img-caneca',
-        src: 'assets/canceca.png'
+        src: 'assets/canceca.webp'
       },
       {
         id: 'adesivo',
@@ -5196,7 +5366,7 @@
         desc_en: 'Small in size, but carrying a message of empathy, science and transformation.',
         price: 'R$ --,--',
         img_class: 'merch-img-adesivo',
-        src: 'assets/adesivo.png'
+        src: 'assets/adesivo.webp'
       },
       {
         id: 'amigurumi',
@@ -5208,7 +5378,7 @@
         desc_en: 'Inspired by the animals of the labchange universe, each amigurumi represents hope for a future with more empathy and less suffering. Adopt a companion, take it home and help set this story free.',
         price: 'R$ --,--',
         img_class: 'merch-img-amigurumi',
-        src: 'assets/amigurumi.png'
+        src: 'assets/amigurumi.webp'
       }
     ];
 
@@ -5282,7 +5452,7 @@
         title_pt: 'Corredor do laboratório — Fase 1',
         title_en: 'Lab corridor — Phase 1',
         img_class: 'gallery-img-01',
-        src: 'assets/corredor.png'
+        src: 'assets/corredor.webp'
       },
       {
         id: 4,
@@ -5290,7 +5460,7 @@
         title_pt: 'Concept de mecânica de gameplay — coelho',
         title_en: 'Gameplay mechanic concept — rabbit',
         img_class: 'gallery-img-04',
-        src: 'assets/concept coelho.jpeg'
+        src: 'assets/concept coelho.webp'
       },
       {
         id: 5,
@@ -5298,7 +5468,7 @@
         title_pt: 'Concept de mecânica de gameplay — rato',
         title_en: 'Gameplay mechanic concept — rat',
         img_class: 'gallery-img-05',
-        src: 'assets/concept rato.jpeg'
+        src: 'assets/concept rato.webp'
       },
       {
         id: 12,
@@ -5306,7 +5476,7 @@
         title_pt: 'Concept de mecânica de gameplay — macaco',
         title_en: 'Gameplay mechanic concept — monkey',
         img_class: 'gallery-img-12',
-        src: 'assets/concept macaco.jpeg'
+        src: 'assets/concept macaco.webp'
       },
       {
         id: 6,
@@ -5314,7 +5484,7 @@
         title_pt: 'Concept art — cientistas',
         title_en: 'Concept art — scientists',
         img_class: 'gallery-img-06',
-        src: 'assets/concept cientistas.jpeg'
+        src: 'assets/concept cientistas.webp'
       },
       {
         id: 13,
@@ -5344,7 +5514,7 @@
         title_pt: 'Workshop — criação de NPCs',
         title_en: 'Workshop — NPC creation',
         img_class: 'gallery-img-09',
-        src: 'assets/npcsmargarida.jpeg'
+        src: 'assets/npcsmargarida.webp'
       },
       {
         id: 10,
@@ -5352,7 +5522,7 @@
         title_pt: 'Jornada Acadêmica Integrada (JAI) — apresentação do projeto',
         title_en: 'Integrated Academic Journey (JAI) — project presentation',
         img_class: 'gallery-img-10',
-        src: 'assets/jai.jpeg'
+        src: 'assets/jai.webp'
       }
     ];
 
