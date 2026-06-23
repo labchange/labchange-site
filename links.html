@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>labchange — links</title>
+  <meta name="description" content="Página de links oficiais do labchange (UFSM) — Bioética e Fuga no Laboratório.">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* DESIGN SYSTEM */
+    :root {
+      --void:       #0A0C0F;
+      --chamber:    #111419;
+      --glass:      #1A1F27;
+      --mist:       #2B3240;
+      --fog:        #7A8A9E;
+      --ash:        #9BA8B8;
+      --bone:       #E2EAF4;
+      --white:      #F5F9FF;
+      --brand:      #66AD47;
+      --brand-dim:  #4A7D33;
+
+      --font-display: 'Fira Mono', monospace;
+      --font-body:    'Lato', sans-serif;
+
+      --radius-sm:   4px;
+      --radius-md:   8px;
+      --radius-lg:   16px;
+      --radius-pill: 999px;
+
+      --glow-brand: 0 0 24px rgba(102, 173, 71, 0.25);
+      
+      /* Espaçamento (sistema 8pt) */
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --space-12: 48px;
+      --space-16: 64px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body.scanlines {
+      position: relative;
+      min-height: 100vh;
+      background-color: var(--void);
+      color: var(--bone);
+      font-family: var(--font-body);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    body.scanlines::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(102, 173, 71, 0.018) 3px,
+        rgba(102, 173, 71, 0.018) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 400px;
+      padding: var(--space-8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 1;
+    }
+
+    /* Topo */
+    .header-logo {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      margin-bottom: var(--space-3);
+      filter: drop-shadow(0 0 16px rgba(102, 173, 71, 0.4));
+      display: block;
+    }
+
+    .header-principles {
+      font-family: var(--font-display);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      color: var(--brand);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--space-8);
+      text-align: center;
+    }
+
+    /* Links */
+    .links-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      width: 100%;
+      margin-bottom: var(--space-12);
+    }
+
+    .link-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: 100%;
+      padding: 1rem 1.5rem;
+      background-color: var(--chamber);
+      border: 1px solid var(--mist);
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .link-btn:hover {
+      border-color: rgba(102, 173, 71, 0.4);
+      transform: translateY(-2px);
+      box-shadow: var(--glow-brand);
+    }
+
+    .link-btn-icon {
+      position: absolute;
+      left: 1.5rem;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .link-btn-text {
+      font-family: var(--font-body);
+      font-weight: 600;
+      color: var(--bone);
+      font-size: 0.9375rem;
+      text-align: center;
+      transition: color 0.2s ease;
+    }
+
+    .link-btn:hover .link-btn-text {
+      color: var(--white);
+    }
+
+    /* Rodapé */
+    .footer {
+      font-family: var(--font-display);
+      color: var(--fog);
+      font-size: 0.625rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      text-align: center;
+    }
+  </style>
+</head>
+<body class="scanlines">
+  <div class="container">
+    <!-- Topo -->
+    <img src="assets/logo-labchange.png" alt="labchange" class="header-logo">
+    <p class="header-principles">[ replace · reduce · refine ]</p>
+
+    <!-- Links -->
+    <div class="links-list">
+      <a href="https://labchange.github.io/labchange-site/" target="_blank" rel="noopener" class="link-btn">
+        <span class="link-btn-icon">◈</span>
+        <span class="link-btn-text">site oficial</span>
+      </a>
+
+      <a href="https://www.youtube.com/watch?v=qAEXInrSXkw" target="_blank" rel="noopener" class="link-btn">
+        <span class="link-btn-icon">▶</span>
+        <span class="link-btn-text">youtube</span>
+      </a>
+
+      <a href="mailto:exlabchange@gmail.com" class="link-btn">
+        <span class="link-btn-icon">✉</span>
+        <span class="link-btn-text">exlabchange@gmail.com</span>
+      </a>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+      UFSM · DESENHO INDUSTRIAL · 2025
+    </footer>
+  </div>
+</body>
+</html>
