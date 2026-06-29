@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="pt-BR" style="scroll-behavior: smooth;">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>labchange — documentação</title>
+  <meta name="description" content="Documentação oficial do site labchange (UFSM) — Design system, decisões de design, estrutura de páginas e acessibilidade.">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* DESIGN SYSTEM */
+    :root {
+      /* Base neutra - Dark Mode (Padrão) */
+      --void:       #0A0C0F;
+      --chamber:    #111419;
+      --glass:      #1A1F27;
+      --mist:       #2B3240;
+      --fog:        #7A8A9E;
+      --ash:        #9BA8B8;
+      --bone:       #E2EAF4;
+      --white:      #F5F9FF;
+      
+      /* Accent */
+      --brand:      #66AD47;
+      --brand-dim:  #4A7D33;
+      --danger:     #FF6B6B;
+      --secondary:  #A78BFA;
+
+      /* Efeitos */
+      --glow-brand: 0 0 24px rgba(102, 173, 71, 0.25);
+      --glow-soft:  0 0 40px rgba(102, 173, 71, 0.08);
+
+      /* Tipografia */
+      --font-display: 'Fira Mono', monospace;
+      --font-body:    'Lato', sans-serif;
+
+      /* Border radius */
+      --radius-sm:   4px;
+      --radius-md:   8px;
+      --radius-lg:   16px;
+      --radius-pill: 999px;
+      
+      /* Espaçamento (sistema 8pt) */
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --space-12: 48px;
+      --space-16: 64px;
+    }
+
+    /* Light Mode */
+    [data-theme="light"] {
+      --void:    #F0F4F0;
+      --chamber: #E4EBE4;
+      --glass:   #D4DDD4;
+      --mist:    #B8C8B8;
+      --fog:     #6B856B;
+      --ash:     #3D5C3D;
+      --bone:    #1A2E1A;
+      --white:   #0D1F0D;
+      --brand:   #3D8C2A;
+      --brand-dim: #255C17;
+      
+      --glow-brand: 0 0 24px rgba(61, 140, 42, 0.15);
+      --glow-soft: 0 0 40px rgba(61, 140, 42, 0.06);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body.scanlines {
+      position: relative;
+      min-height: 100vh;
+      background-color: var(--void);
+      color: var(--bone);
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      display: flex;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body.scanlines::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(102, 173, 71, 0.018) 3px,
+        rgba(102, 173, 71, 0.018) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 240px;
+      background-color: var(--chamber);
+      border-right: 1px solid var(--glass);
+      padding: var(--space-8) var(--space-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+      z-index: 100;
+      overflow-y: auto;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .sidebar-header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .sidebar-title {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      color: var(--brand);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .mobile-header-bar {
+      display: none;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .nav-link {
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      color: var(--ash);
+      text-decoration: none;
+      padding: var(--space-2) 0 var(--space-2) var(--space-3);
+      border-left: 2px solid transparent;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .nav-link:hover {
+      color: var(--brand);
+    }
+
+    .nav-link.active {
+      color: var(--brand);
+      border-left-color: var(--brand);
+      font-weight: 700;
+    }
+
+    .theme-toggle-btn {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      background: none;
+      border: 1px solid var(--mist);
+      border-radius: var(--radius-sm);
+      color: var(--ash);
+      padding: var(--space-2) var(--space-4);
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      color: var(--brand);
+      border-color: var(--brand);
+      box-shadow: var(--glow-brand);
+    }
+
+    /* CONTEÚDO PRINCIPAL */
+    .main-wrapper {
+      margin-left: 240px;
+      width: calc(100% - 240px);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: var(--space-12) var(--space-8);
+      box-sizing: border-box;
+      z-index: 1;
+    }
+
+    .content-container {
+      width: 100%;
+      max-width: 720px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+    }
+
+    /* SEÇÕES */
+    .doc-section {
+      scroll-margin-top: var(--space-8);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1.875rem;
+      font-weight: 500;
+      color: var(--white);
+      text-transform: lowercase;
+      border-bottom: 1px solid var(--mist);
+      padding-bottom: var(--space-2);
+      margin-bottom: var(--space-2);
+    }
+
+    .doc-subtitle {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 1.125rem;
+      color: var(--white);
+      margin-top: var(--space-4);
+    }
+
+    .doc-section p {
+      color: var(--ash);
+      line-height: 1.7;
+    }
+
+    .doc-section strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    /* PALETA DE CORES (CHIPS REAIS) */
+    .color-section-title {
+      font-family: var(--font-display);
+      font-size: 0.875rem;
+      color: var(--brand);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: var(--space-4);
+    }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+    }
+
+    .color-card {
+      background-color: var(--chamber);
+      border: 1px solid var(--glass);
+      border-radius: var(--radius-md);
+      padding: var(--space-3);
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      transition: border-color 0.2s ease;
+    }
+
+    .color-card:hover {
+      border-color: var(--mist);
+    }
+
+    .color-swatch {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--mist);
+      flex-shrink: 0;
+    }
+
+    .color-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .color-name {
+      font-family: var(--font-display);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .color-hex {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      color: var(--brand);
+    }
+
+    .color-desc {
+      font-size: 0.75rem;
+      color: var(--fog);
+    }
+
+    /* TABELAS */
+    .doc-table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--mist);
+      border-radius: var(--radius-md);
+      background-color: var(--chamber);
+      margin-top: var(--space-2);
+      box-sizing: border-box;
+    }
+
+    .doc-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.875rem;
+      min-width: 500px;
+    }
+
+    .doc-table th {
+      font-family: var(--font-display);
+      color: var(--brand);
+      font-weight: 700;
+      border-bottom: 1px solid var(--mist);
+      padding: var(--space-3) var(--space-4);
+      background-color: rgba(102, 173, 71, 0.03);
+    }
+
+    .doc-table td {
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--glass);
+      color: var(--bone);
+      vertical-align: middle;
+    }
+
+    .doc-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* CODE BLOCKS */
+    .code-panel {
+      background-color: #0c0e12;
+      border: 1px solid var(--mist);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      font-family: var(--font-display);
+      font-size: 0.8125rem;
+      margin-top: var(--space-2);
+      width: 100%;
+    }
+
+    .code-header {
+      background-color: var(--chamber);
+      border-bottom: 1px solid var(--mist);
+      padding: var(--space-2) var(--space-4);
+      color: var(--fog);
+      font-size: 0.6875rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .code-body {
+      padding: var(--space-4);
+      overflow-x: auto;
+      color: #a7b7c7;
+      line-height: 1.5;
+    }
+
+    /* ESTRUTURA DE PAGINAS */
+    .page-structure-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .page-structure-card {
+      background-color: var(--chamber);
+      border: 1px solid var(--glass);
+      border-radius: var(--radius-md);
+      padding: var(--space-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .page-structure-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.0625rem;
+      color: var(--brand);
+      margin-left: var(--space-2);
+    }
+
+    .page-structure-desc {
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      color: var(--ash);
+    }
+
+    .page-structure-sections {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      color: var(--fog);
+      background-color: var(--void);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--mist);
+      line-height: 1.5;
+    }
+
+    /* LISTAS COM ÍCONE */
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .step-item {
+      display: flex;
+      gap: var(--space-3);
+      align-items: flex-start;
+    }
+
+    .step-icon {
+      color: var(--brand);
+      font-family: var(--font-display);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .step-text {
+      color: var(--ash);
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+    }
+
+    /* WIREFRAMES */
+    .wireframe-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+      margin-top: var(--space-4);
+    }
+
+    /* LIGHTBOX PARA IMAGENS DA DOCUMENTAÇÃO */
+    .docs-lightbox {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(10, 12, 15, 0.92);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .docs-lightbox.active {
+      opacity: 1;
+    }
+    .lightbox-close-btn {
+      position: absolute;
+      top: var(--space-6);
+      right: var(--space-6);
+      background: none;
+      border: 1px solid var(--mist);
+      border-radius: var(--radius-sm);
+      color: var(--brand);
+      padding: var(--space-2) var(--space-4);
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+    }
+    .lightbox-close-btn:hover {
+      border-color: var(--brand);
+      box-shadow: var(--glow-brand);
+    }
+    .lightbox-content {
+      max-width: 90%;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-4);
+    }
+    .lightbox-content img {
+      max-width: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+      border: 1px solid var(--glass);
+      border-radius: var(--radius-md);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+    .lightbox-caption {
+      font-family: var(--font-display);
+      color: var(--bone);
+      font-size: 0.875rem;
+      text-align: center;
+    }
+    body.lightbox-open {
+      overflow: hidden;
+    }
+
+    /* PERSONAS */
+    .personas-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+      margin-top: var(--space-4);
+    }
+
+    .persona-card {
+      width: 100%;
+      background-color: var(--chamber);
+      border: 1px solid var(--mist);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      display: flex;
+      gap: var(--space-6);
+      transition: all 0.25s ease;
+    }
+
+    .persona-card:hover {
+      border-color: rgba(102, 173, 71, 0.3);
+      box-shadow: var(--glow-soft);
+    }
+
+    .persona-left {
+      width: 30%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-4);
+      flex-shrink: 0;
+    }
+
+    .persona-right {
+      width: 70%;
+      border-left: 3px solid rgba(102, 173, 71, 0.3);
+      padding-left: var(--space-4);
+      display: flex;
+      align-items: center;
+    }
+
+    .persona-desc {
+      font-family: var(--font-body);
+      color: var(--ash);
+      font-size: 0.9375rem;
+      line-height: 1.7;
+    }
+
+    .persona-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-pill);
+      background-color: var(--glass);
+      border: 2px solid var(--brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--brand);
+    }
+
+    .persona-info {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      width: 100%;
+    }
+
+    .persona-info-field {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .persona-info-label {
+      font-family: var(--font-display);
+      color: var(--fog);
+      font-size: 0.625rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .persona-info-value {
+      font-family: var(--font-body);
+      color: var(--ash);
+      font-size: 0.875rem;
+    }
+
+    .persona-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--white);
+      font-size: 1rem;
+      margin-bottom: var(--space-1);
+    }
+
+    /* RESPONSIVIDADE (MOBILE) */
+    @media (max-width: 768px) {
+      body.scanlines {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+        bottom: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--glass);
+        padding: var(--space-4) var(--space-6);
+        flex-direction: column;
+        gap: 0;
+        background-color: var(--chamber);
+        overflow: visible;
+      }
+
+      .sidebar-header {
+        display: none;
+      }
+
+      .mobile-header-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        min-height: 36px;
+      }
+
+      .mobile-header-title {
+        font-family: var(--font-display);
+        font-size: 0.75rem;
+        color: var(--brand);
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .mobile-controls {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+      }
+
+      .mobile-menu-toggle {
+        background: none;
+        border: 1px solid var(--mist);
+        border-radius: var(--radius-sm);
+        color: var(--brand);
+        padding: var(--space-1) var(--space-3);
+        cursor: pointer;
+        font-family: var(--font-display);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        width: 100%;
+        margin-top: var(--space-4);
+        padding-top: var(--space-4);
+        border-top: 1px solid var(--mist);
+        gap: var(--space-1);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-link {
+        border-left: none;
+        border-bottom: 1px solid transparent;
+        padding: var(--space-2) 0;
+      }
+
+      .nav-link.active {
+        border-left-color: transparent;
+        border-bottom-color: var(--brand);
+      }
+
+      .theme-toggle-btn {
+        margin-top: 0;
+        padding: var(--space-1) var(--space-3);
+      }
+
+      .main-wrapper {
+        margin-left: 0;
+        width: 100%;
+        padding: var(--space-8) var(--space-4);
+      }
+
+      .doc-section {
+        scroll-margin-top: 80px;
+      }
+
+      .persona-card {
+        flex-direction: column;
+        gap: var(--space-4);
+      }
+
+      .persona-left {
+        width: 100%;
+      }
+
+      .persona-right {
+        width: 100%;
+        border-left: 3px solid rgba(102, 173, 71, 0.3);
+        padding-left: var(--space-4);
+      }
+
+      .wireframe-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="scanlines">
+
+  <!-- SIDEBAR / MENU MÓVEL -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-title">[ documentação ]</span>
+    </div>
+
+    <!-- Barra de Cabeçalho Mobile -->
+    <div class="mobile-header-bar">
+      <span class="mobile-header-title">[ docs ]</span>
+      <div class="mobile-controls">
+        <button id="mobile-theme-toggle" class="theme-toggle-btn" style="display: none; margin-top: 0;"></button>
+        <button id="mobile-menu-toggle" class="mobile-menu-toggle">menu ▼</button>
+      </div>
+    </div>
+
+    <nav id="nav-links" class="nav-links">
+      <a href="#introducao" class="nav-link active">introdução</a>
+      <a href="#briefing" class="nav-link">briefing</a>
+      <a href="#analise-site-similar" class="nav-link">análise de site similar</a>
+      <a href="#decisoes-design" class="nav-link">decisões de design</a>
+      <a href="#design-system" class="nav-link">design system</a>
+      <a href="#estrutura-paginas" class="nav-link">estrutura de páginas</a>
+      <a href="#rabiscoframes" class="nav-link">rabiscoframes</a>
+      <a href="#personas" class="nav-link">personas</a>
+      <a href="#funcionalidades" class="nav-link">funcionalidades</a>
+      <a href="#acessibilidade" class="nav-link">acessibilidade</a>
+      <a href="#hospedagem" class="nav-link">hospedagem</a>
+      <a href="#testes-usabilidade" class="nav-link">testes de usabilidade</a>
+    </nav>
+
+    <button id="theme-toggle" class="theme-toggle-btn">
+      <span class="theme-toggle-icon">🌙</span>
+      <span class="theme-toggle-text">tema escuro</span>
+    </button>
+  </aside>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="main-wrapper">
+    <div class="content-container">
+      
+      <!-- 1. INTRODUÇÃO -->
+      <section id="introducao" class="doc-section">
+        <h2 class="section-title">introdução</h2>
+        <p>O <strong>labchange</strong> é um projeto interdisciplinar de pesquisa e extensão do curso de Desenho Industrial da UFSM que une design, ciência e tecnologia para sensibilizar o público sobre bioética e métodos substitutivos à experimentação animal.</p>
+        <p>O site funciona como portal oficial do projeto, reunindo informações sobre o jogo, os personagens, a equipe e as atualizações do desenvolvimento. O site anterior (<a href="https://labchange.framer.website/" target="_blank" style="color: var(--brand); text-decoration: none;">https://labchange.framer.website/</a>) foi desenvolvido no Framer, ferramenta que, apesar de prática, limitava o nível de customização possível. A migração para o Antigravity, com geração de HTML, CSS e JavaScript puros, abriu espaço para um redesign completo: mais controle sobre cada detalhe visual e liberdade para aplicar o design system da marca, incluindo elementos únicos como o efeito de scanlines e a animação de boot screen. O resultado é um site mais coeso, agradável e intuitivo, com identidade própria que conversa diretamente com o universo do jogo.</p>
+        <p>O site é hospedado via GitHub Pages, garantindo acesso gratuito, versionamento e facilidade de manutenção pela equipe.</p>
+      </section>
+
+      <!-- BRIEFING -->
+      <section id="briefing" class="doc-section">
+        <h2 class="section-title">briefing</h2>
+        <div class="steps-list">
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text"><strong>O que?</strong> — Um site para divulgação do <strong>labchange</strong> para mobile e desktop.</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text"><strong>Como?</strong> — O site será desenvolvido com tecnologias de design responsivo no Framer, integrando elementos de UX/UI, animações leves e recursos interativos que traduzem o ambiente e a narrativa do jogo. A interface seguirá a identidade visual do game, promovendo uma experiência imersiva e acessível tanto em mobile quanto desktop.</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text"><strong>Para quem?</strong> — Voltado a estudantes de ensino médio e universitário, além de professores, que podem utilizar o site como recurso pedagógico para discutir ética e ciência em sala de aula. Também se destina a pesquisadores, extensionistas, educadores ambientais e o público geral interessado em inovação, empatia e sustentabilidade.</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text"><strong>Por quem?</strong> — Pelo compromisso com a educação humanitária, que busca unir design, ciência e tecnologia para promover empatia, reflexão crítica e responsabilidade ética nas relações entre humanos, animais e o meio ambiente.</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text"><strong>Em que lugar?</strong> — Principalmente no mobile e desktop.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ANÁLISE DE SITE SIMILAR -->
+      <section id="analise-site-similar" class="doc-section">
+        <h2 class="section-title">análise de site similar: sally face</h2>
+        
+        <p>Link: <a href="https://portablemoose.com/" target="_blank" style="color: var(--brand); text-decoration: none;">https://portablemoose.com/</a></p>
+        <p>O site oficial do jogo Sally Face foi analisado como referência por compartilhar características semelhantes ao <strong>labchange</strong>: atmosfera dark, identidade visual fortemente ligada ao universo do jogo e público gamer.</p>
+
+        <h3 class="doc-subtitle">1. Visibilidade do status do sistema</h3>
+        <p>O menu principal é sempre visível no topo e os links mudam de cor ao hover, mantendo o usuário orientado. Como melhoria, seria interessante incluir indicadores visuais em trechos longos de rolagem.</p>
+
+        <h3 class="doc-subtitle">2. Correspondência entre o sistema e o mundo real</h3>
+        <p>A linguagem e o visual são totalmente alinhados à estética do jogo, com tons escuros, fontes góticas e ícones de consoles. Textos longos em branco sobre fundo preto podem cansar; ajustar contraste ou espaçamento melhoraria a leitura.</p>
+
+        <h3 class="doc-subtitle">3. Controle e liberdade do usuário</h3>
+        <p>Estrutura linear e intuitiva, com navegação livre entre seções. Poderia se beneficiar de um botão fixo de voltar ao topo e âncoras internas.</p>
+
+        <h3 class="doc-subtitle">4. Consistência e padrões</h3>
+        <p>Coerência estética com o branding do jogo em cores e tipografia. Seções externas como o blog do WordPress destoam levemente e podem quebrar a imersão.</p>
+
+        <h3 class="doc-subtitle">5. Prevenção de erros</h3>
+        <p>Site simples e direto, com baixo risco de erro. Links externos devem abrir em nova aba para não interromper o fluxo de navegação.</p>
+
+        <h3 class="doc-subtitle">6. Reconhecimento em vez de memorização</h3>
+        <p>Títulos claros e ícones reconhecíveis pelo público gamer. Seções locais como o FAQ se beneficiariam de subtítulos fixos ou atalhos internos.</p>
+
+        <h3 class="doc-subtitle">7. Flexibilidade e eficiência de uso</h3>
+        <p>Navegação intuitiva para diferentes perfis de usuário. A inclusão de busca interna ou filtros de conteúdo aumentaria a eficiência.</p>
+
+        <h3 class="doc-subtitle">8. Estética e design minimalista</h3>
+        <p>Visual impactante e limpo, com bom equilíbrio entre imagem e texto. Variar a hierarquia visual ao longo do scroll ajudaria a guiar o olhar e reduzir o cansaço visual.</p>
+
+        <h3 class="doc-subtitle">9. Ajuda a reconhecer, diagnosticar e corrigir erros</h3>
+        <p>Não foram identificados erros críticos de navegação. O site é suficientemente simples para não gerar confusão.</p>
+
+        <h3 class="doc-subtitle">10. Ajuda e documentação</h3>
+        <p>O FAQ cumpre bem seu papel, com linguagem acessível e direta. Um link para suporte técnico ou formulário de contato rápido complementaria essa seção.</p>
+      </section>
+
+      <!-- 2. DECISÕES DE DESIGN -->
+      <section id="decisoes-design" class="doc-section">
+        <h2 class="section-title">decisões de design</h2>
+        
+        <h3 class="doc-subtitle">Por que dark mode?</h3>
+        <p>O clima visual do <strong>labchange</strong> foi definido a partir da identidade do jogo: um laboratório à meia-noite, monitorado por telas frias e iluminado por luz artificial. O dark mode não é uma escolha estética arbitrária — ele reforça a narrativa do projeto e cria imersão desde o primeiro acesso ao site. A base em tons de azul-preto (<code>#0A0C0F</code>) evita o preto puro, que leria como genérico, e aproxima o visual de monitores antigos com iluminação fria.</p>
+
+        <h3 class="doc-subtitle">Por que Fira Mono?</h3>
+        <p>A tipografia principal do site é a mesma família usada na logo — Fira Mono. Essa decisão garante coesão total entre a identidade do jogo e o portal: qualquer título, label ou elemento de interface compartilha o mesmo DNA tipográfico da marca. Fira Mono em bold remete a terminais de computador dos anos 80, reforçando o universo do jogo sem precisar de recursos visuais extras.</p>
+
+        <h3 class="doc-subtitle">Por que o verde #66AD47?</h3>
+        <p>O verde da marca não é um verde neon ou saturado — é um verde fosco de terminal, próximo ao fósforo de monitores CRT dos anos 80. Ele foi definido no rebranding da identidade visual do jogo e aplicado diretamente ao site como cor de accent principal. Além da coerência com a marca, o verde passou por verificação de acessibilidade WCAG 2.1, atingindo ratio de contraste 7.12:1 sobre o fundo base — aprovado em nível AAA.</p>
+
+        <h3 class="doc-subtitle">Modo claro</h3>
+        <p>O site oferece alternância entre modo escuro e claro, com paleta derivada do mesmo verde da marca mas adaptada para fundos claros. A preferência é salva em localStorage para persistir entre sessões.</p>
+
+        <h3 class="doc-subtitle">Internacionalização</h3>
+        <p>Todas as páginas suportam português brasileiro (padrão) e inglês, alternáveis via toggle na navegação. Os textos são armazenados em objeto JavaScript e aplicados dinamicamente, sem reload de página. A preferência de idioma também é salva em localStorage.</p>
+
+        <h3 id="atlas-mnemosyne" class="doc-subtitle">Atlas Mnemosyne</h3>
+        <p>O Atlas Mnemosyne do <strong>labchange</strong> reúne referências visuais, conceituais e históricas que fundamentam a atmosfera do jogo e do portal, guiando a direção de arte e as decisões estéticas do projeto.</p>
+        <div style="margin-top: var(--space-4); border: 1px solid var(--glass); border-radius: var(--radius-md); overflow: hidden; cursor: pointer;" onclick="openDocsLightbox('assets/atlas-mnemosyne.jpg', 'Atlas Mnemosyne do labchange — referências visuais')">
+          <img src="assets/atlas-mnemosyne.jpg" alt="Atlas Mnemosyne do labchange — referências visuais" style="width: 100%; height: auto; display: block;">
+        </div>
+      </section>
+
+      <!-- 3. DESIGN SYSTEM -->
+      <section id="design-system" class="doc-section">
+        <h2 class="section-title">design system</h2>
+        
+        <h3 class="doc-subtitle">Paleta de cores</h3>
+        
+        <h4 class="color-section-title">Base Neutra</h4>
+        <div class="color-grid">
+          <div class="color-card">
+            <div class="color-swatch" style="background-color: #0A0C0F;"></div>
+            <div class="color-info">
+              <span class="color-name">--void</span>
+              <span class="color-hex">#0A0C0F</span>
+              <span class="color-desc">fundo base</span>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background-color: #111419;"></div>
+            <div class="color-info">
+              <span class="color-name">--chamber</span>
+              <span class="color-hex">#111419</span>
+              <span class="color-desc">fundo de cards</span>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background-color: #1A1F27;"></div>
+            <div class="color-info">
+              <span class="color-name">--glass</span>
+              <span class="color-hex">#1A1F27</span>
+              <span class="color-desc">bordas / superfícies</span>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background-color: #2B3240;"></div>
+            <div class="color-info">
+              <span class="color-name">--mist</span>
+              <span class="color-hex">#2B3240</span>
+              <span class="color-desc">divisores</span>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background-color: #7A8A9E;"></div>
+            <div class="color-info">
+              <span class="color-name">--fog</span>
+              <span class="color-hex">#7A8A9E</span>
+              <span class="color-desc">texto placeholder</span>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background-color: #9BA8B8;"></div>
+            <div class="color-info">
+              <span class="color-name">--ash</span>
+              <span class="color-hex">#9BA8B8</span>
+              <span class="color-desc">texto secundário</span>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background-color: #E2EAF4;"></div>
+            <div class="color-info">
+              <span class="color-name">--bone</span>
+              <span class="color-hex">#E2EAF4</span>
+              <span class="color-desc">texto primário</span>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background-color: #F5F9FF;"></div>
+            <div class="color-info">
+              <span class="color-name">--white</span>
+              <span class="color-hex">#F5F9FF</span>
+              <span class="color-desc">títulos / destaques</span>
+            </div>
+          </div>
+        </div>
+
+        <h4 class="color-section-title">Accent</h4>
+        <div class="color-grid">
+          <div class="color-card">
+            <div class="color-swatch" style="background-color: #66AD47;"></div>
+            <div class="color-info">
+              <span class="color-name">--brand</span>
+              <span class="color-hex">#66AD47</span>
+              <span class="color-desc">verde terminal</span>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background-color: #FF6B6B;"></div>
+            <div class="color-info">
+              <span class="color-name">--danger</span>
+              <span class="color-hex">#FF6B6B</span>
+              <span class="color-desc">alertas e erros</span>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background-color: #A78BFA;"></div>
+            <div class="color-info">
+              <span class="color-name">--secondary</span>
+              <span class="color-hex">#A78BFA</span>
+              <span class="color-desc">tags secundárias</span>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="doc-subtitle">Tipografia</h3>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>Fonte</th>
+                <th>Tamanho</th>
+                <th>Peso</th>
+                <th>Uso</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Display</strong></td>
+                <td>Fira Mono</td>
+                <td>4rem</td>
+                <td>700</td>
+                <td>Hero, nome da marca</td>
+              </tr>
+              <tr>
+                <td><strong>H1</strong></td>
+                <td>Fira Mono</td>
+                <td>2.75rem</td>
+                <td>700</td>
+                <td>Títulos de página</td>
+              </tr>
+              <tr>
+                <td><strong>H2</strong></td>
+                <td>Fira Mono</td>
+                <td>1.875rem</td>
+                <td>500</td>
+                <td>Títulos de seção</td>
+              </tr>
+              <tr>
+                <td><strong>H3</strong></td>
+                <td>Lato</td>
+                <td>1.375rem</td>
+                <td>700</td>
+                <td>Subtítulos, cards</td>
+              </tr>
+              <tr>
+                <td><strong>Body</strong></td>
+                <td>Lato</td>
+                <td>0.9375rem</td>
+                <td>400</td>
+                <td>Parágrafos</td>
+              </tr>
+              <tr>
+                <td><strong>Label</strong></td>
+                <td>Fira Mono</td>
+                <td>0.75rem</td>
+                <td>400</td>
+                <td>Tags, labels, metadados</td>
+              </tr>
+              <tr>
+                <td><strong>Caption</strong></td>
+                <td>Fira Mono</td>
+                <td>0.625rem</td>
+                <td>400</td>
+                <td>Uppercase, espaçado</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="doc-subtitle">Espaçamento</h3>
+        <p>Sistema de 8pt — múltiplos de 4px:</p>
+        <p><strong>4px</strong> (<code>--space-1</code>) · <strong>8px</strong> (<code>--space-2</code>) · <strong>12px</strong> (<code>--space-3</code>) · <strong>16px</strong> (<code>--space-4</code>) · <strong>24px</strong> (<code>--space-6</code>) · <strong>32px</strong> (<code>--space-8</code>) · <strong>48px</strong> (<code>--space-12</code>) · <strong>64px</strong> (<code>--space-16</code>)</p>
+
+        <h3 class="doc-subtitle">Border radius</h3>
+        <p><strong>--radius-sm</strong> · 4px · botões e inputs</p>
+        <p><strong>--radius-md</strong> · 8px · cards pequenos</p>
+        <p><strong>--radius-lg</strong> · 16px · cards grandes e modais</p>
+        <p><strong>--radius-pill</strong> · 999px · tags e badges</p>
+
+        <h3 class="doc-subtitle">Elemento signature — scanlines</h3>
+        <p>Linhas horizontais sutis aplicadas via <code>::after</code> em seções de destaque, imitando monitor CRT. Código:</p>
+        <div class="code-panel">
+          <div class="code-header">
+            <span>CSS snippet</span>
+          </div>
+          <pre class="code-body"><code>background: repeating-linear-gradient(
+  0deg,
+  transparent, transparent 3px,
+  rgba(102, 173, 71, 0.018) 3px,
+  rgba(102, 173, 71, 0.018) 4px
+);</code></pre>
+        </div>
+      </section>
+
+      <!-- 4. ESTRUTURA DE PÁGINAS -->
+      <section id="estrutura-paginas" class="doc-section">
+        <h2 class="section-title">estrutura de páginas</h2>
+        <div class="page-structure-list">
+          
+          <div class="page-structure-card">
+            <div class="page-structure-name">home</div>
+            <div class="page-structure-desc">Página principal do site. Apresenta o jogo, os princípios dos 3Rs, uma prévia dos personagens, o último anúncio, prévia da galeria, da loja e da equipe. Contém a animação de boot screen ao primeiro acesso.</div>
+            <div class="page-structure-sections">nav · hero · sobre o jogo · replace/reduce/refine · personagens em destaque · último anúncio · prévia da galeria · prévia da loja · prévia da equipe · call to action · rodapé</div>
+          </div>
+
+          <div class="page-structure-card">
+            <div class="page-structure-name">personagens</div>
+            <div class="page-structure-desc">Apresenta os três animais jogáveis do <strong>labchange</strong> com papel no jogo, contexto científico real e tabela de atributos animada.</div>
+            <div class="page-structure-sections">coelho branco (Oryctolagus cuniculus) · rato (Rattus norvegicus) · macaco-rhesus (Macaca mulatta)</div>
+          </div>
+
+          <div class="page-structure-card">
+            <div class="page-structure-name">galeria</div>
+            <div class="page-structure-desc">Grid de imagens com lightbox e filtros por categoria: screenshots · concept art · gamejam · bastidores.</div>
+            <div class="page-structure-sections">screenshots · concept art · gamejam · bastidores</div>
+          </div>
+
+          <div class="page-structure-card">
+            <div class="page-structure-name">anúncios</div>
+            <div class="page-structure-desc">Feed de atualizações e patches do projeto em estilo de log de terminal, com filtros por categoria e suporte a múltiplos idiomas.</div>
+            <div class="page-structure-sections">feed de notícias · filtros de categorias · changelogs</div>
+          </div>
+
+          <div class="page-structure-card">
+            <div class="page-structure-name">loja</div>
+            <div class="page-structure-desc">Apresenta os itens de merchandise do <strong>labchange</strong> com descrições e canal de contato via email para aquisição.</div>
+            <div class="page-structure-sections">produtos · descrições · e-mail para pedidos</div>
+          </div>
+
+          <div class="page-structure-card">
+            <div class="page-structure-name">equipe</div>
+            <div class="page-structure-desc">Lista de todos os membros do projeto organizados por área, com destaque para as orientadoras.</div>
+            <div class="page-structure-sections">orientadoras · membros · contato</div>
+          </div>
+          
+        </div>
+      </section>
+
+      <!-- rabiscoframes -->
+      <section id="rabiscoframes" class="doc-section">
+        <h2 class="section-title">rabiscoframes</h2>
+        <p style="color: var(--ash); font-family: var(--font-body); font-weight: 400; line-height: 1.7; margin-bottom: var(--space-4);">Os rabiscoframes representam os esboços iniciais da estrutura visual e do fluxo de navegação do site, mapeando a distribuição de conteúdo e a disposição dos elementos de interface antes do desenvolvimento do código final.</p>
+        
+        <div class="wireframe-grid">
+          <div style="border: 1px solid var(--glass); border-radius: var(--radius-md); overflow: hidden; background-color: var(--chamber); padding: var(--space-2); cursor: pointer;" onclick="openDocsLightbox('assets/wire1.jpg', '')">
+            <img src="assets/wire1.jpg" alt="Rabiscoframe — Primeira proposta estrutural" style="width: 100%; height: auto; display: block; border-radius: calc(var(--radius-md) - 2px);">
+          </div>
+          <div style="border: 1px solid var(--glass); border-radius: var(--radius-md); overflow: hidden; background-color: var(--chamber); padding: var(--space-2); cursor: pointer;" onclick="openDocsLightbox('assets/wire2.jpg', '')">
+            <img src="assets/wire2.jpg" alt="Rabiscoframe — Detalhamento de seções" style="width: 100%; height: auto; display: block; border-radius: calc(var(--radius-md) - 2px);">
+          </div>
+        </div>
+      </section>
+
+      <!-- personas -->
+      <section id="personas" class="doc-section">
+        <h2 class="section-title">personas</h2>
+        <p style="color: var(--ash); font-family: var(--font-body); font-weight: 400; line-height: 1.6;">As personas foram definidas para guiar as decisões de design e conteúdo do site, representando os principais perfis de usuários do labchange.</p>
+        
+        <div class="personas-list">
+          
+          <!-- Eduardo -->
+          <div class="persona-card">
+            <div class="persona-left">
+              <div class="persona-avatar">◉</div>
+              <div class="persona-info">
+                <div class="persona-name">Eduardo</div>
+                
+                <div class="persona-info-field">
+                  <span class="persona-info-label">idade</span>
+                  <span class="persona-info-value">16</span>
+                </div>
+                
+                <div class="persona-info-field">
+                  <span class="persona-info-label">ocupação</span>
+                  <span class="persona-info-value">Estudante</span>
+                </div>
+                
+                <div class="persona-info-field">
+                  <span class="persona-info-label">obs.</span>
+                  <span class="persona-info-value">Gamer, cresceu acessando a internet e está acostumado com o mundo digital</span>
+                </div>
+              </div>
+            </div>
+            <div class="persona-right">
+              <div class="persona-desc">Ele assiste ao teaser interativo, explora os personagens e decide baixar a demo. Durante a navegação, acaba aprendendo sobre bioética e métodos substitutivos de forma leve, conectando-se ao tema pela experiência imersiva do jogo.</div>
+            </div>
+          </div>
+
+          <!-- Camila -->
+          <div class="persona-card">
+            <div class="persona-left">
+              <div class="persona-avatar">◈</div>
+              <div class="persona-info">
+                <div class="persona-name">Camila</div>
+                
+                <div class="persona-info-field">
+                  <span class="persona-info-label">idade</span>
+                  <span class="persona-info-value">18</span>
+                </div>
+                
+                <div class="persona-info-field">
+                  <span class="persona-info-label">ocupação</span>
+                  <span class="persona-info-value">Estudante</span>
+                </div>
+                
+                <div class="persona-info-field">
+                  <span class="persona-info-label">obs.</span>
+                  <span class="persona-info-value">Não está familiarizada com jogos digitais, mas está jogando LC</span>
+                </div>
+              </div>
+            </div>
+            <div class="persona-right">
+              <div class="persona-desc">Ela explora as seções informativas sobre o projeto, assiste aos vídeos e compreende o propósito educativo do labchange. Interessada pelo visual e pela mensagem ética, compartilha o conteúdo com sua turma e vê o jogo como uma forma diferente de aprender ciência com empatia.</div>
+            </div>
+          </div>
+
+          <!-- Alzira -->
+          <div class="persona-card">
+            <div class="persona-left">
+              <div class="persona-avatar">⬡</div>
+              <div class="persona-info">
+                <div class="persona-name">Alzira</div>
+                
+                <div class="persona-info-field">
+                  <span class="persona-info-label">idade</span>
+                  <span class="persona-info-value">48</span>
+                </div>
+                
+                <div class="persona-info-field">
+                  <span class="persona-info-label">ocupação</span>
+                  <span class="persona-info-value">Bióloga, pesquisadora ou docente de ciências biológica</span>
+                </div>
+                
+                <div class="persona-info-field">
+                  <span class="persona-info-label">obs.</span>
+                  <span class="persona-info-value">Trabalha com pesquisa científica, já teve contato com laboratórios, experimentação e viveu as tensões éticas de uso de animais. Ela conhece bem os debates em bioética, as exigências das comissões de ética, a literatura científica e normativa relacionada a animais de laboratório.</span>
+                </div>
+              </div>
+            </div>
+            <div class="persona-right">
+              <div class="persona-desc">Ela navega pelas seções informativas do site, explora a página de personagens e compreende a proposta educativa do labchange. Ao conhecer o contexto científico de cada animal e os princípios dos 3Rs, reconhece paralelos com debates que já vivenciou na pesquisa. Compartilha o site com alunos e colegas como ponto de partida para discussões sobre bioética, experimentação animal e métodos substitutivos.</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- funcionalidades -->
+      <section id="funcionalidades" class="doc-section">
+        <h2 class="section-title">funcionalidades</h2>
+        <p style="color: var(--ash); font-family: var(--font-body); font-weight: 400; line-height: 1.6;">O site do labchange reúne um conjunto de funcionalidades construídas em HTML, CSS e JavaScript puros, sem frameworks externos.</p>
+        
+        <h3 class="color-section-title" style="margin-top: var(--space-4);">Páginas</h3>
+        <div class="steps-list" style="margin-top: var(--space-2); margin-bottom: var(--space-4);">
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">home: apresentação do projeto com animação de boot screen ao primeiro acesso</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">personagens: ficha completa dos três animais jogáveis com atributos e contexto científico</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">galeria: grid de imagens com lightbox e filtros por categoria</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">anúncios: feed de atualizações e patches em estilo de log de terminal</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">loja: apresentação dos itens de merchandise com canal de contato</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">equipe: membros do projeto organizados por área</span>
+          </div>
+        </div>
+
+        <h3 class="color-section-title">Recursos globais</h3>
+        <div class="steps-list" style="margin-top: var(--space-2); margin-bottom: var(--space-4);">
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">alternância entre modo escuro e claro, salvo em localStorage</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">suporte a português e inglês, alternáveis via toggle na navegação</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">navegação sticky com blur e menu hamburger em mobile</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">scroll suave entre seções</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">preferências de idioma e tema persistidas entre sessões</span>
+          </div>
+        </div>
+
+        <h3 class="color-section-title">Recursos por página</h3>
+        <div class="steps-list" style="margin-top: var(--space-2); margin-bottom: var(--space-4);">
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">animação de boot screen com efeito de terminal e digitação do nome</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">barras de atributos animadas ao entrar na viewport (Intersection Observer)</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">lightbox com navegação por setas, teclado e swipe em mobile</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">filtros de conteúdo sem reload de página</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">carrossel automático com pausa no hover</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">efeito de scanlines aplicado sobre imagens da loja</span>
+          </div>
+        </div>
+
+        <h3 class="color-section-title">Hospedagem e infraestrutura</h3>
+        <div class="steps-list" style="margin-top: var(--space-2); margin-bottom: var(--space-2);">
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">hospedado via GitHub Pages com versionamento por branch</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">página de linktree standalone (links.html)</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">página de documentação standalone (docs.html)</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">assets organizados em pasta /assets com caminhos relativos</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. ACESSIBILIDADE -->
+      <section id="acessibilidade" class="doc-section">
+        <h2 class="section-title">acessibilidade</h2>
+        <p>Todas as decisões de cor foram verificadas contra as diretrizes WCAG 2.1. A tabela abaixo apresenta os pares de cor principais e seus ratios de contraste:</p>
+        
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Par</th>
+                <th>Ratio</th>
+                <th>Resultado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>--brand / --void</strong></td>
+                <td>7.12</td>
+                <td>AAA ✅</td>
+              </tr>
+              <tr>
+                <td><strong>--bone / --void</strong></td>
+                <td>16.14</td>
+                <td>AAA ✅</td>
+              </tr>
+              <tr>
+                <td><strong>--ash / --void</strong></td>
+                <td>8.10</td>
+                <td>AAA ✅</td>
+              </tr>
+              <tr>
+                <td><strong>--fog / --void</strong></td>
+                <td>5.55</td>
+                <td>AA ✅</td>
+              </tr>
+              <tr>
+                <td><strong>--danger / --void</strong></td>
+                <td>7.06</td>
+                <td>AAA ✅</td>
+              </tr>
+              <tr>
+                <td><strong>--secondary / --void</strong></td>
+                <td>7.20</td>
+                <td>AAA ✅</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>A cor <strong>--fog</strong> é utilizada exclusivamente em textos desabilitados e placeholders, contextos onde o WCAG permite contraste reduzido por intenção. Ainda assim, o valor de 5.55 garante aprovação em nível AA.</p>
+        
+        <h3 class="doc-subtitle">Outras decisões de acessibilidade:</h3>
+        <div class="steps-list">
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">Tamanho mínimo de área clicável: 44×44px em todos os botões e toggles</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">font-size mínimo de 16px em inputs para evitar zoom automático no iOS</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">Atributo alt em todas as imagens</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">Navegação por teclado funcional em lightbox e menus</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">scroll-behavior: smooth para transições de navegação suaves</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. HOSPEDAGEM -->
+      <section id="hospedagem" class="doc-section">
+        <h2 class="section-title">hospedagem</h2>
+        <p>O site do <strong>labchange</strong> é hospedado via GitHub Pages, solução gratuita integrada ao repositório do projeto. O repositório está organizado da seguinte forma:</p>
+        
+        <div class="code-panel">
+          <div class="code-header">
+            <span>Estrutura de arquivos</span>
+          </div>
+          <pre class="code-body"><code>labchange-site/
+├── index.html          ← site principal
+├── links.html          ← página de linktree
+├── docs.html           ← esta documentação
+└── assets/
+    ├── favicon.png
+    └── [imagens do projeto]</code></pre>
+        </div>
+
+        <p>Cada atualização de conteúdo é feita diretamente no repositório via upload ou edição de arquivos. O GitHub Pages publica automaticamente qualquer alteração feita na branch main em até alguns minutos.</p>
+        <p>O site está disponível em: <a href="https://labchange.github.io/labchange-site/" style="color: var(--brand); text-decoration: none;">https://labchange.github.io/labchange-site/</a></p>
+      </section>
+
+      <!-- TESTES DE USABILIDADE -->
+      <section id="testes-usabilidade" class="doc-section">
+        <h2 class="section-title">testes de usabilidade</h2>
+        <p style="color: var(--ash); font-family: var(--font-body); font-weight: 400; line-height: 1.7; margin-bottom: var(--space-4);">Os testes de usabilidade foram conduzidos de forma informal com um grupo de 6 participantes com perfis variados. O objetivo foi avaliar a navegabilidade, clareza das informações e acessibilidade geral do site em contexto real de uso.</p>
+        
+        <div class="doc-table-wrapper" style="margin-bottom: var(--space-6);">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Participantes</th>
+                <th>Familiaridade com tecnologia</th>
+                <th>Familiaridade com Jogos digitais</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Familiar (mãe)</strong></td>
+                <td>Média</td>
+                <td>Média</td>
+              </tr>
+              <tr>
+                <td><strong>Familiar (pai)</strong></td>
+                <td>Baixa</td>
+                <td>Baixa</td>
+              </tr>
+              <tr>
+                <td><strong>Familiar (irmão)</strong></td>
+                <td>Média</td>
+                <td>Alta</td>
+              </tr>
+              <tr>
+                <td><strong>Familiar (namorada)</strong></td>
+                <td>Média</td>
+                <td>Baixa</td>
+              </tr>
+              <tr>
+                <td><strong>Membros da equipe (x5)</strong></td>
+                <td>Alta</td>
+                <td>Alta</td>
+              </tr>
+              <tr>
+                <td><strong>Calouros do DI (x3)</strong></td>
+                <td>Alta</td>
+                <td>Média</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="doc-subtitle">Tarefas propostas</h3>
+        <div class="steps-list" style="margin-top: var(--space-2); margin-bottom: var(--space-6);">
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">Encontrar a página de personagens e identificar as habilidades do coelho</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">Localizar o email de contato da loja</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">Alternar o idioma para inglês</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">Alternar entre modo escuro e claro</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">Acessar a página da equipe e identificar as orientadoras do projeto</span>
+          </div>
+          <div class="step-item">
+            <span class="step-icon">→</span>
+            <span class="step-text">Baixar a DEMO</span>
+          </div>
+        </div>
+
+        <h3 class="doc-subtitle">Resultados gerais</h3>
+        <p style="color: var(--ash); font-family: var(--font-body); font-weight: 400; line-height: 1.7; margin-bottom: var(--space-4);">As tarefas relacionadas à navegação principal (personagens, equipe) foram concluídas com facilidade por todos os participantes, independente do perfil. A alternância de idioma e tema foi encontrada rapidamente pelos participantes com maior familiaridade tecnológica e com um pouco mais de tempo pelos demais, sem que ninguém precisasse de ajuda externa. O email de contato da loja foi localizado por todos.</p>
+        <p style="color: var(--ash); font-family: var(--font-body); font-weight: 400; line-height: 1.7; margin-bottom: var(--space-6);">O modo claro foi bem recebido pelos participantes menos familiarizados com interfaces dark, que relataram se sentir mais confortáveis com ele. A animação de intro foi elogiada como elemento imersivo, mas um participante sugeriu que o botão de "pular" poderia ser mais visível.</p>
+
+        <h3 class="doc-subtitle">Conclusão</h3>
+        <p style="color: var(--ash); font-family: var(--font-body); font-weight: 400; line-height: 1.7;">O site demonstrou boa usabilidade geral para diferentes perfis de usuário. O principal ponto de atenção identificado foi a visibilidade do botão de pular a intro.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    // MOBILE MENU TOGGLE
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+
+    mobileMenuToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      mobileMenuToggle.textContent = isOpen ? 'fechar ▲' : 'menu ▼';
+    });
+
+    // Close mobile menu on nav link click
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        mobileMenuToggle.textContent = 'menu ▼';
+      });
+    });
+
+    // INTERSECTION OBSERVER FOR ACTIVE SIDEBAR LINK
+    const observerOptions = {
+      root: null,
+      rootMargin: '-80px 0px -60% 0px',
+      threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          document.querySelectorAll('.nav-link').forEach(link => {
+            if (link.getAttribute('href') === `#${id}`) {
+              link.classList.add('active');
+            } else {
+              link.classList.remove('active');
+            }
+          });
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('section[id]').forEach(section => {
+      observer.observe(section);
+    });
+
+    // THEME TOGGLE (DARK / LIGHT)
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleIcon = themeToggle.querySelector('.theme-toggle-icon');
+    const themeToggleText = themeToggle.querySelector('.theme-toggle-text');
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('docs-theme', theme);
+      
+      if (theme === 'light') {
+        themeToggleIcon.textContent = '☀️';
+        themeToggleText.textContent = 'tema claro';
+      } else {
+        themeToggleIcon.textContent = '🌙';
+        themeToggleText.textContent = 'tema escuro';
+      }
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      setTheme(newTheme);
+    });
+
+    // Init theme
+    const savedTheme = localStorage.getItem('docs-theme') || 'dark';
+    setTheme(savedTheme);
+
+    // LIGHTBOX FUNCTIONS
+    function openDocsLightbox(src, caption) {
+      const lightbox = document.getElementById('docs-lightbox');
+      const img = document.getElementById('lightbox-img');
+      const cap = document.getElementById('lightbox-caption');
+      
+      if (!lightbox || !img) return;
+      
+      img.src = src;
+      if (cap) cap.textContent = caption;
+      
+      lightbox.style.display = 'flex';
+      // force reflow
+      lightbox.offsetHeight;
+      lightbox.classList.add('active');
+      document.body.classList.add('lightbox-open');
+    }
+
+    function closeDocsLightbox() {
+      const lightbox = document.getElementById('docs-lightbox');
+      if (!lightbox) return;
+      
+      lightbox.classList.remove('active');
+      setTimeout(() => {
+        if (!lightbox.classList.contains('active')) {
+          lightbox.style.display = 'none';
+        }
+      }, 250);
+      document.body.classList.remove('lightbox-open');
+    }
+
+    // Close lightbox on Esc key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeDocsLightbox();
+      }
+    });
+
+    // Close lightbox on clicking outside the content area
+    const docsLightbox = document.getElementById('docs-lightbox');
+    if (docsLightbox) {
+      docsLightbox.addEventListener('click', (e) => {
+        if (e.target === docsLightbox) {
+          closeDocsLightbox();
+        }
+      });
+    }
+  </script>
+  <!-- LIGHTBOX PARA IMAGENS -->
+  <div id="docs-lightbox" class="docs-lightbox" style="display: none;">
+    <button class="lightbox-close-btn" onclick="closeDocsLightbox()">✕ fechar</button>
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="" alt="Imagem ampliada">
+      <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+  </div>
+</body>
+</html>
